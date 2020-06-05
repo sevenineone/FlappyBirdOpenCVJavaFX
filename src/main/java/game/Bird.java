@@ -15,6 +15,7 @@ public class Bird extends Pane {
     static volatile int Y = 300;
     static int Y2 = 300;
     static int Y3 = 300;
+    static int Y4 = 300;
 
 
     public Bird() {
@@ -44,7 +45,7 @@ public class Bird extends Pane {
 
     public void moveY() {
         Double lastY = getTranslateY();
-            setTranslateY((Bird.Y + Bird.Y2 + Bird.Y3 + lastY) / 4);
+            setTranslateY((Bird.Y + Bird.Y2 + Bird.Y3 + Bird.Y4 + lastY) / 5);
         for (Wall w : FlappyBird.walls) {
             if (this.getBoundsInParent().intersects(w.getBoundsInParent())) {
                 //setTranslateY(lastY);
@@ -56,12 +57,18 @@ public class Bird extends Pane {
 
         if (getTranslateY() < 0) setTranslateY(0);
         if (getTranslateY() > 580) setTranslateY(580);
+        Bird.Y4 = Bird.Y3;
         Bird.Y3 = Bird.Y2;
         Bird.Y2 = Bird.Y;
 
     }
 
     static class FaceDetection extends Thread {
+        private volatile boolean mFinish = false;
+        public void finish()		//Инициирует завершение потока
+        {
+            mFinish = true;
+        }
         @Override
         public void run() {
             nu.pattern.OpenCV.loadLocally();
@@ -82,12 +89,17 @@ public class Bird extends Pane {
                             area = rect.height * rect.width;
                         }
                     }
-                    System.out.print("Y- ");
-                    System.out.println(maxRect.y);
+                   // System.out.print("Y- ");
+                   // System.out.println(maxRect.y);
                     Bird.Y = (maxRect.y - 50) * 3;
 
                 } else {
                     System.out.println("camera is not available.");
+                    return;
+                }
+                if(mFinish == true){
+                    videoDevice.release();
+                    return;
                 }
             }
         }

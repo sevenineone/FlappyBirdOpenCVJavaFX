@@ -3,8 +3,11 @@ package game;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -12,6 +15,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,6 +30,8 @@ public class FlappyBird extends Application {
     public static Boolean started = false;
 
     public static ArrayList<Wall> walls = new ArrayList<>();
+
+
     Bird bird = new Bird();
 
     public Parent createContent() {
@@ -68,7 +74,13 @@ public class FlappyBird extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                faceDetection.finish();
+                System.exit(0);
+            }
+        });
         Pane startPane = new Pane();
         Text startText = new Text("pres SPACE to START");
         startText.setX(65);
@@ -108,6 +120,7 @@ public class FlappyBird extends Application {
                         stage.show();
                     }
                 });
+
                 AnimationTimer animationTimer = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
@@ -123,6 +136,7 @@ public class FlappyBird extends Application {
                 animationTimer.start();
             }
         });
+
     }
 
 
