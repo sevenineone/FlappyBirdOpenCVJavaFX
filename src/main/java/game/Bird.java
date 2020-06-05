@@ -14,6 +14,7 @@ public class Bird extends Pane {
     Rectangle rect;
     static volatile int Y = 300;
     static int Y2 = 300;
+    static int Y3 = 300;
 
 
     public Bird() {
@@ -28,7 +29,9 @@ public class Bird extends Pane {
         for (Wall w : FlappyBird.walls) {
             if (getBoundsInParent().intersects(w.getBoundsInParent())) {
                 if (getTranslateX() + 20 == w.getTranslateX()) {
-                    setTranslateX(getTranslateX() - 2);
+                    FlappyBird.gameOver = true;
+                    setTranslateX(0);
+                    //setTranslateX(getTranslateX() - 2);
                     return;
                 }
             }
@@ -41,16 +44,19 @@ public class Bird extends Pane {
 
     public void moveY() {
         Double lastY = getTranslateY();
-            setTranslateY((Bird.Y + Bird.Y2 + lastY) / 3);
+            setTranslateY((Bird.Y + Bird.Y2 + Bird.Y3 + lastY) / 4);
         for (Wall w : FlappyBird.walls) {
             if (this.getBoundsInParent().intersects(w.getBoundsInParent())) {
-                setTranslateY(lastY);
+                //setTranslateY(lastY);
+                FlappyBird.gameOver = true;
+                setTranslateX(0);
                 return;
                 }
             }
 
         if (getTranslateY() < 0) setTranslateY(0);
         if (getTranslateY() > 580) setTranslateY(580);
+        Bird.Y3 = Bird.Y2;
         Bird.Y2 = Bird.Y;
 
     }
