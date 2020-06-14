@@ -7,7 +7,7 @@ public class View {
 
     public static Stage gameStage = new Stage();
 
-    public static void showScene(Scene scene){
+    public static void showScene(Scene scene) {
         gameStage.setScene(scene);
         gameStage.show();
     }

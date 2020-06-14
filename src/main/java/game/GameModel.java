@@ -2,23 +2,25 @@ package game;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import static game.View.showScene;
+import static game.GameOverMenuModel.createGameOverMenu;
 
-public class GameModel {
-
-    Pane appRoot = new Pane();
-    Pane gameRoot = new Pane();
-    //Scene scene = new Scene(appRoot, 600, 600);
+class GameModel {
+    private static Scene mainScene;
+    private static Pane appRoot = new Pane();
+    private Pane gameRoot = new Pane();
     ArrayList<Wall> walls = new ArrayList<>();
-    Bird bird = new Bird();
-    Score scoreLabel = new Score();
+    private Bird bird = new Bird();
+    private Score scoreLabel = new Score();
     //-//
-    boolean gameOver = false;
+    static boolean gameOver = false;
+    private int finalScore = 0;
     //-// coordinates (заменю потом на стек) //-//
     static volatile int Y = 300;
     static int Y2 = 300;
@@ -28,9 +30,7 @@ public class GameModel {
     static FaceDetection faceDetection;
 
 
-
-
-    public void gameStart(){
+    public void gameStart() {
         faceDetection = new FaceDetection();
         faceDetection.start();
         gameRoot.setPrefSize(600, 600);
@@ -49,10 +49,16 @@ public class GameModel {
         }
         gameRoot.getChildren().add(bird);
         appRoot.getChildren().addAll(gameRoot, scoreLabel);
-        showScene(new Scene(appRoot, 600, 600));
+        mainScene = new Scene(appRoot, 600, 600);
+        showGame();
         mainLoop();
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void showGame() {
+        showScene(mainScene);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void update() {
         moveX();
         intersectionX();
@@ -75,10 +81,11 @@ public class GameModel {
         for (Wall w : walls) {
             if (bird.getBoundsInParent().intersects(w.getBoundsInParent())) {
                 if (bird.getTranslateX() + 20 == w.getTranslateX()) {
-                    //FlappyBird.gameOver = true;
+                    finalScore = scoreLabel.get();
+                    gameOver = true;
                     bird.setTranslateX(0);
                     scoreLabel.setZero();
-                    //setTranslateX(getTranslateX() - 2);
+                    gameRoot.setLayoutX(0);
                     return;
                 }
             }
@@ -106,20 +113,26 @@ public class GameModel {
     public void intersectionY() {
         for (Wall w : walls) {
             if (bird.getBoundsInParent().intersects(w.getBoundsInParent())) {
-                //setTranslateY(lastY);
-                //FlappyBird.gameOver = true;
+                finalScore = scoreLabel.get();
+                scoreLabel.setZero();
+                gameOver = true;
                 bird.setTranslateX(0);
+                gameRoot.setLayoutX(0);
                 return;
             }
         }
 
     }
 
-    public void mainLoop(){
-        AnimationTimer animationTimer = new AnimationTimer(){
+    public void mainLoop() {
+        AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                update();
+                if (!gameOver) update();
+                else {
+                    showScene(createGameOverMenu(finalScore));
+                }
+
             }
         };
         animationTimer.start();

@@ -9,7 +9,6 @@ import static game.View.showScene;
 public class FlappyBird extends Application {
 
 
-
     @Override
     public void start(Stage stage) throws Exception {
         showScene(createStartMenu());
