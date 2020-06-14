@@ -14,8 +14,8 @@ public class Wall extends Pane {
         rect = new Rectangle(40, height, Color.GREEN);
         rect.setStroke(Color.BLACK);
         rect.setStrokeWidth(3);
-        DropShadow shadow = new DropShadow();
-        rect.setEffect(shadow);
+       // DropShadow shadow = new DropShadow();
+        //rect.setEffect(shadow);
         getChildren().add(rect);
     }
 }

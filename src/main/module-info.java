@@ -2,6 +2,7 @@ module FlappyBirdOpneCVJavaFX {
 
     requires javafx.fxml;
     requires javafx.controls;
+    requires javafx.graphics;
 
-    opens game;
+    exports game to javafx.graphics;
 }
