@@ -8,7 +8,7 @@ import org.opencv.videoio.VideoCapture;
 
 class FaceDetection extends Thread {
     private volatile boolean mFinish = false;
-    public void finish()		//Инициирует завершение потока
+    public void finish()
     {
         mFinish = true;
     }
@@ -32,15 +32,13 @@ class FaceDetection extends Thread {
                         area = rect.height * rect.width;
                     }
                 }
-                // System.out.print("Y- ");
-                // System.out.println(maxRect.y);
                 GameModel.Y = (maxRect.y - 50) * 3;
 
             } else {
                 System.out.println("camera is not available.");
                 return;
             }
-            if(mFinish == true){
+            if(mFinish){
                 videoDevice.release();
                 return;
             }

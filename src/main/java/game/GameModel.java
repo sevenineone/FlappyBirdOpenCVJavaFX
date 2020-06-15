@@ -3,8 +3,12 @@ package game;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,81 +19,94 @@ class GameModel {
     private static Scene mainScene;
     private static Pane appRoot = new Pane();
     private Pane gameRoot = new Pane();
-    ArrayList<Wall> walls = new ArrayList<>();
-    private Bird bird = new Bird();
+    private ArrayList<Wall> walls = new ArrayList<>();
+    private Bird bird;
     private Score scoreLabel = new Score();
     //-//
     static boolean gameOver = false;
     private int finalScore = 0;
+    static boolean viewOnce = false;
     //-// coordinates (заменю потом на стек) //-//
     static volatile int Y = 300;
-    static int Y2 = 300;
-    static int Y3 = 300;
-    static int Y4 = 300;
-    //-//---------------//-//
-    static FaceDetection faceDetection;
+    private static int Y2 = 300;
+    private static int Y3 = 300;
+    private static int Y4 = 300;
+
+    GameModel() {
+        File file = new File("BirdSprite.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
+        bird = new Bird(imageView);
+    }
 
 
-    public void gameStart() {
-        faceDetection = new FaceDetection();
+    void gameStart() {
+        //-//---------------//-//
+        FaceDetection faceDetection = new FaceDetection();
         faceDetection.start();
         gameRoot.setPrefSize(600, 600);
         for (int i = 0; i < 100; i++) {
-            int enter = (int) (Math.random() * 100 + 50); // 50 to 150
+            int enter = (int) (Math.random() * 100 + 60); // 50 to 150
             int height = new Random().nextInt(600 - enter);
             Wall wall = new Wall(height);
-            wall.setTranslateX(i * 350 + 600);
-            wall.setTranslateY(0);
+            wall.moveX(i * 350 + 600);
+            wall.moveY(0);
             walls.add(wall);
             Wall wall2 = new Wall(600 - enter - height);
-            wall2.setTranslateX(i * 350 + 600);
-            wall2.setTranslateY(height + enter);
+            wall2.moveX(i * 350 + 600);
+            wall2.moveY(height + enter);
             walls.add(wall2);
             gameRoot.getChildren().addAll(wall, wall2);
         }
         gameRoot.getChildren().add(bird);
         appRoot.getChildren().addAll(gameRoot, scoreLabel);
-        mainScene = new Scene(appRoot, 600, 600);
+        mainScene = new Scene(appRoot, 600, 600, Color.LIGHTBLUE);
         showGame();
         mainLoop();
     }
 
-    public static void showGame() {
+    static void showGame() {
         showScene(mainScene);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void update() {
-        moveX();
-        intersectionX();
-        moveY();
-        intersectionY();
-        bird.translateXProperty().addListener((ovs, old, newValue) -> {
-            int offset = newValue.intValue();
-            if (offset > 200) gameRoot.setLayoutX(-(offset - 200));
-        });
+    private void update() {
+        if (!gameOver) {
+            moveX();
+            intersectionX();
+            moveY();
+            intersectionY();
+            bird.translateXProperty().addListener((ovs, old, newValue) -> {
+                int offset = newValue.intValue();
+                if (offset > 200) gameRoot.setLayoutX(-(offset - 200));
+            });
+            bird.animation.play();
+        } else if (!viewOnce) {
+            showScene(createGameOverMenu(finalScore));
+            viewOnce = true;
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void moveX() {
-        bird.setTranslateX(bird.getTranslateX() + 2);
+    private void moveX() {
+        bird.moveX(bird.getX() + 2);
     }
 
     //-//
 
-    public void intersectionX() {
+    private void intersectionX() {
         for (Wall w : walls) {
-            if (bird.getBoundsInParent().intersects(w.getBoundsInParent())) {
-                if (bird.getTranslateX() + 20 == w.getTranslateX()) {
+            if (bird.intersects(w)) {
+                if (bird.getX() + 20 == w.getX()) {
                     finalScore = scoreLabel.get();
                     gameOver = true;
-                    bird.setTranslateX(0);
+                    bird.moveX(0);
                     scoreLabel.setZero();
                     gameRoot.setLayoutX(0);
                     return;
                 }
             }
-            if (bird.getTranslateX() == w.getTranslateX()) {
+            if (bird.getX() == w.getX()) {
                 scoreLabel.update();
                 return;
             }
@@ -98,11 +115,11 @@ class GameModel {
 
     //-//
 
-    public void moveY() {
-        Double lastY = bird.getTranslateY();
-        bird.setTranslateY((Y + Y2 + Y3 + Y4 + lastY) / 5);
-        if (bird.getTranslateY() < 0) bird.setTranslateY(0);
-        if (bird.getTranslateY() > 580) bird.setTranslateY(580);
+    private void moveY() {
+        double lastY = bird.getY();
+        bird.moveY((Y + Y2 + Y3 + Y4 + lastY) / 5);
+        if (bird.getY() < 0) bird.moveY(0);
+        if (bird.getY() > 580) bird.moveY(580);
         Y4 = Y3;
         Y3 = Y2;
         Y2 = Y;
@@ -110,13 +127,13 @@ class GameModel {
 
     //-//
 
-    public void intersectionY() {
+    private void intersectionY() {
         for (Wall w : walls) {
-            if (bird.getBoundsInParent().intersects(w.getBoundsInParent())) {
+            if (bird.intersects(w)) {
                 finalScore = scoreLabel.get();
                 scoreLabel.setZero();
                 gameOver = true;
-                bird.setTranslateX(0);
+                bird.moveX(0);
                 gameRoot.setLayoutX(0);
                 return;
             }
@@ -124,14 +141,11 @@ class GameModel {
 
     }
 
-    public void mainLoop() {
+    private void mainLoop() {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                if (!gameOver) update();
-                else {
-                    showScene(createGameOverMenu(finalScore));
-                }
+                update();
 
             }
         };
