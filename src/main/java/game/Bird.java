@@ -11,12 +11,12 @@ import java.io.File;
 class Bird extends Pane {
 
     ////////////////////////////
-    private static final int count = 9;
-    private static final int columns = 3;
-    private static final int offsetX = 0;
-    private static final int offsetY = 0;
-    private static final int width = 40;
-    private static final int height = 35;
+    private final int count = 9;
+    private final int columns = 3;
+    private final int offsetX = 0;
+    private final int offsetY = 0;
+    private final int width = 40;
+    private final int height = 35;
     SpriteAnimation animation;
 
     //////////////////////////////
@@ -51,6 +51,7 @@ class Bird extends Pane {
     boolean intersects(Wall wall) {
         return getBoundsInParent().intersects(wall.collision());
     }
+
 
 }
 

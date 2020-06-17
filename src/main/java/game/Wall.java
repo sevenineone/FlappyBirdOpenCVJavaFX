@@ -7,26 +7,26 @@ import javafx.scene.shape.Rectangle;
 
 class Wall extends Pane {
 
-    Wall(int height){
+    Wall(int height) {
         Rectangle rect = new Rectangle(40, height, Color.GREEN);
         rect.setStroke(Color.BLACK);
         rect.setStrokeWidth(3);
         getChildren().add(rect);
     }
 
-    Bounds collision(){
+    Bounds collision() {
         return getBoundsInParent();
     }
 
-    void moveX(double x){
+    void moveX(double x) {
         setTranslateX(x);
     }
 
-    void moveY(double y){
+    void moveY(double y) {
         setTranslateY(y);
     }
 
-    double getX(){
+    double getX() {
         return getTranslateX();
     }
 }

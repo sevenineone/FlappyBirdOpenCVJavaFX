@@ -9,9 +9,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-class StartMenuModel {
+class StartMenu {
 
-    static Scene createStartMenu() {
+    Scene createStartMenu() {
         Pane startPane = new Pane();
         Text startText = new Text("press SPACE to START");
         startText.setFill(Color.GREEN);
@@ -21,14 +21,7 @@ class StartMenuModel {
         startText.setY(300);
         startText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 40));
         startPane.getChildren().add(startText);
-        Scene scene = new Scene(startPane, 600, 600, Color.LIGHTBLUE);
-        scene.setOnKeyPressed(k -> {
-            if (k.getCode() == KeyCode.SPACE) {
-                GameModel gm = new GameModel();
-                startPane.getChildren().removeAll();
-                gm.gameStart();
-            }
-        });
-        return scene;
+
+        return new Scene(startPane, 600, 600, Color.LIGHTBLUE);
     }
 }
