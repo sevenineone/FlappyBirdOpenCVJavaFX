@@ -16,7 +16,7 @@ class GenerateLevel {
 
     Scene generate(ArrayList<Wall> walls, Bird bird, Score scoreLabel) {
         gameRoot.setPrefSize(600, 600);
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 100; i++) {
             int enter = (int) (Math.random() * 100 + 60); // 50 to 150
             int height = new Random().nextInt(600 - enter);
             Wall wall = new Wall(height);
@@ -29,6 +29,12 @@ class GenerateLevel {
             walls.add(wall2);
             gameRoot.getChildren().addAll(wall, wall2);
         }
+        Wall wall = new Wall(600);
+        wall.moveX(100 * 350 + 600);
+        wall.moveY(0);
+        walls.add(wall);
+        gameRoot.getChildren().add(wall);
+
         gameRoot.getChildren().add(bird);
         appRoot.getChildren().addAll(gameRoot, scoreLabel);
         return new Scene(appRoot, 600, 600, Color.LIGHTBLUE);
