@@ -1,9 +1,12 @@
 package game;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+
+import java.io.File;
 
 class Bird extends Pane {
 
@@ -18,7 +21,10 @@ class Bird extends Pane {
 
     //////////////////////////////
 
-    Bird(ImageView imageView) {
+    Bird() {
+        File file = new File("BirdSprite.png");
+        Image image = new Image(file.toURI().toString());
+        ImageView imageView = new ImageView(image);
         imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
         animation = new SpriteAnimation(imageView, Duration.millis(500), count, columns, offsetX, offsetY, width, height);
         setTranslateX(100);

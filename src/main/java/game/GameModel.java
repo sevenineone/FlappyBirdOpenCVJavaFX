@@ -33,10 +33,8 @@ class GameModel {
     private static int Y4 = 300;
 
     GameModel() {
-        File file = new File("BirdSprite.png");
-        Image image = new Image(file.toURI().toString());
-        ImageView imageView = new ImageView(image);
-        bird = new Bird(imageView);
+
+        bird = new Bird();
     }
 
 
