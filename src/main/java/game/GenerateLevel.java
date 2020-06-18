@@ -39,8 +39,4 @@ class GenerateLevel {
         walls.add(wall2);
     }
 
-
-
-
-
 }

@@ -116,6 +116,4 @@ public class GameModel {
         return finalScore;
     }
 
-
-
 }

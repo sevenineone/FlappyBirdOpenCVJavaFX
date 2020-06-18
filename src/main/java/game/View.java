@@ -25,8 +25,8 @@ class View {
     private final int offsetY = 0;
     private final int width = 40;
     private final int height = 35;
-    ImageView imageView;
-    SpriteAnimation animation;
+    private ImageView imageView;
+    private SpriteAnimation animation;
     /////////////////////////////////////////
     private Stage gameStage;
     private Pane gameRoot;
@@ -34,7 +34,7 @@ class View {
     private Scene sceneGame;
     private Scene sceneGameOver;
     private GameModel gameModel;
-    boolean viewOnce = false;
+    private boolean viewOnce = false;
 
     void init() {
         gameRoot = new Pane();
