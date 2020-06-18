@@ -54,7 +54,7 @@ public class FlappyBirdTest {
         gameModel.moveX();
         gameModel.moveX();
         gameModel.intersection();
-        boolean res4 = gameModel.gameOver;
+        boolean res4 = gameModel.getGameOver();
         assertEquals(ans4, res4);
     }
 
@@ -67,7 +67,7 @@ public class FlappyBirdTest {
         gameModel.moveX(599);
         gameModel.moveX();
         gameModel.intersection();
-        boolean res5 = gameModel.gameOver;
+        boolean res5 = gameModel.getGameOver();
         assertEquals(ans5, res5);
     }
 

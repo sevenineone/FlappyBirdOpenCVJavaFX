@@ -34,6 +34,7 @@ class View {
     private Scene sceneGame;
     private Scene sceneGameOver;
     private GameModel gameModel;
+    boolean viewOnce = false;
 
     void init() {
         gameRoot = new Pane();
@@ -60,22 +61,22 @@ class View {
                 AnimationTimer animationTimer = new AnimationTimer() {
                     @Override
                     public void handle(long l) {
-                        if (!gameModel.gameOver) {
+                        if (!gameModel.getGameOver()) {
                             gameModel.update();
                             rewrite();
-                        } else if (!gameModel.viewOnce) {
+                        } else if (!viewOnce) {
                             GameOverMenu gameOverMenuModel = new GameOverMenu();
-                            sceneGameOver = gameOverMenuModel.createGameOverMenu(gameModel.finalScore);
+                            sceneGameOver = gameOverMenuModel.createGameOverMenu(gameModel.getFinalScore());
                             sceneGameOver.setOnKeyPressed(k -> {
                                 if (k.getCode() == KeyCode.SPACE) {
-                                    gameModel.gameOver = false;
-                                    gameModel.viewOnce = false;
+                                    gameModel.setGameOverFalse();
+                                    viewOnce = false;
                                     gameRoot.setLayoutX(0);
                                     show(sceneGame);
                                 }
                             });
                             show(sceneGameOver);
-                            gameModel.viewOnce = true;
+                            viewOnce = true;
                         }
                     }
                 };

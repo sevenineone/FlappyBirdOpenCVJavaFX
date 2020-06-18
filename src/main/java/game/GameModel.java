@@ -8,14 +8,13 @@ public class GameModel {
     private Bird bird;
     private Score scoreLabel = new Score();
     //-//
-    public boolean gameOver = false;
-    int finalScore = 0;
-    boolean viewOnce = false;
+    private boolean gameOver = false;
+    private int finalScore = 0;
     //-//
     private ArrayList<Double> coordinates = new ArrayList<>();
     private FaceDetection faceDetection = new FaceDetection();
 
-    public void init() {
+    void init() {
         bird = new Bird();
         GenerateLevel generateLevel = new GenerateLevel();
         generateLevel.generate(walls);
@@ -104,6 +103,19 @@ public class GameModel {
     Score getScoreLabel() {
         return scoreLabel;
     }
+
+    public boolean getGameOver(){
+        return gameOver;
+    }
+
+    void setGameOverFalse(){
+        gameOver = false;
+    }
+
+    int getFinalScore(){
+        return finalScore;
+    }
+
 
 
 }
