@@ -4,20 +4,22 @@ import java.util.ArrayList;
 
 class GameModel {
     private double lastY = 300;
-    ArrayList<Wall> walls = new ArrayList<>();
-    Bird bird;
-    Score scoreLabel = new Score();
+    private ArrayList<Wall> walls = new ArrayList<>();
+    private Bird bird;
+    private Score scoreLabel = new Score();
     //-//
     boolean gameOver = false;
     int finalScore = 0;
     boolean viewOnce = false;
     //-//
     private ArrayList<Double> coordinates = new ArrayList<>();
-    FaceDetection faceDetection = new FaceDetection();
+    private FaceDetection faceDetection = new FaceDetection();
 
     GameModel() {
-        faceDetection.start();
         bird = new Bird();
+        GenerateLevel generateLevel = new GenerateLevel();
+        generateLevel.generate(walls, bird, scoreLabel);
+        faceDetection.start();
         coordinates.add(300.0);
         coordinates.add(300.0);
         coordinates.add(300.0);
@@ -25,13 +27,10 @@ class GameModel {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    void update(GenerateLevel generateLevel) {
+    void update() {
         moveX();
-        intersectionX(generateLevel);
         moveY();
-        intersectionY(generateLevel);
-        generateLevel.movePane(bird);
-        bird.animation.play();
+        intersection();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,17 +40,14 @@ class GameModel {
 
     //-//
 
-    private void intersectionX(GenerateLevel generateLevel) {
+    private void intersection() {
         for (Wall w : walls) {
             if (bird.intersects(w)) {
-                if (bird.getX() + 20 == w.getX()) {
-                    finalScore = scoreLabel.get();
-                    gameOver = true;
-                    bird.moveX(0);
-                    scoreLabel.setZero();
-                    generateLevel.moveZero();
-                    return;
-                }
+                finalScore = scoreLabel.get();
+                gameOver = true;
+                bird.moveX(100);
+                scoreLabel.setZero();
+                return;
             }
             if (bird.getX() == w.getX()) {
                 scoreLabel.update();
@@ -74,20 +70,18 @@ class GameModel {
         coordinates.remove(4);
     }
 
-    //-//
 
-    private void intersectionY(GenerateLevel generateLevel) {
-        for (Wall w : walls) {
-            if (bird.intersects(w)) {
-                finalScore = scoreLabel.get();
-                scoreLabel.setZero();
-                gameOver = true;
-                bird.moveX(0);
-                generateLevel.moveZero();
-                return;
-            }
-        }
-
+    Bird getBird() {
+        return bird;
     }
+
+    ArrayList<Wall> getWalls() {
+        return walls;
+    }
+
+    Score getScoreLabel() {
+        return scoreLabel;
+    }
+
 
 }

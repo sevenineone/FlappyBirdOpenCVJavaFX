@@ -9,6 +9,7 @@ public class FlappyBird extends Application {
     @Override
     public void start(Stage stage) {
         View view = new View();
+        view.init();
         view.startView();
 
     }

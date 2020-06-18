@@ -1,32 +1,34 @@
 package game;
 
-import javafx.geometry.Bounds;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+class Wall {
 
-class Wall extends Pane {
+    private Double Y = 0.0;
+    private Double X = 0.0;
+    private Double H;
+    private Double W;
 
-    Wall(int height) {
-        Rectangle rect = new Rectangle(40, height, Color.GREEN);
-        rect.setStroke(Color.BLACK);
-        rect.setStrokeWidth(3);
-        getChildren().add(rect);
-    }
-
-    Bounds collision() {
-        return getBoundsInParent();
+    Wall(double height) {
+        W = 40.0;
+        H = height;
     }
 
     void moveX(double x) {
-        setTranslateX(x);
+        X = x;
     }
 
     void moveY(double y) {
-        setTranslateY(y);
+        Y = y;
     }
 
     double getX() {
-        return getTranslateX();
+        return X;
+    }
+
+    double getY() {
+        return Y;
+    }
+
+    double getH() {
+        return H;
     }
 }

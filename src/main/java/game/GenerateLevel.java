@@ -1,9 +1,5 @@
 package game;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,13 +7,10 @@ import java.util.Random;
 class GenerateLevel {
 
 
-    private Pane appRoot = new Pane();
-    private Pane gameRoot = new Pane();
+    void generate(ArrayList<Wall> walls, Bird bird, Score scoreLabel) {
 
-    Scene generate(ArrayList<Wall> walls, Bird bird, Score scoreLabel) {
-        gameRoot.setPrefSize(600, 600);
         for (int i = 0; i < 100; i++) {
-            int enter = (int) (Math.random() * 100 + 60); // 50 to 150
+            int enter = (int) (Math.random() * 100 + 60); // 60 to 100
             int height = new Random().nextInt(600 - enter);
             Wall wall = new Wall(height);
             wall.moveX(i * 350 + 600);
@@ -27,27 +20,17 @@ class GenerateLevel {
             wall2.moveX(i * 350 + 600);
             wall2.moveY(height + enter);
             walls.add(wall2);
-            gameRoot.getChildren().addAll(wall, wall2);
         }
         Wall wall = new Wall(600);
         wall.moveX(100 * 350 + 600);
         wall.moveY(0);
         walls.add(wall);
-        gameRoot.getChildren().add(wall);
 
-        gameRoot.getChildren().add(bird);
-        appRoot.getChildren().addAll(gameRoot, scoreLabel);
-        return new Scene(appRoot, 600, 600, Color.LIGHTBLUE);
     }
 
-    void movePane(Bird bird) {
-        bird.translateXProperty().addListener((ovs, old, newValue) -> {
-            int offset = newValue.intValue();
-            if (offset > 200) gameRoot.setLayoutX(-(offset - 200));
-        });
-    }
 
-    void moveZero() {
-        gameRoot.setLayoutX(0);
-    }
+
+
+
+
 }
