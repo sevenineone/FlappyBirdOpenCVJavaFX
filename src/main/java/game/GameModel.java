@@ -25,7 +25,7 @@ public class GameModel {
         coordinates.add(300.0);
     }
 
-    public void initForTest(){
+    public void initForTest() {
         bird = new Bird();
         GenerateLevel generateLevel = new GenerateLevel();
         generateLevel.generateForTest(walls);
@@ -74,20 +74,21 @@ public class GameModel {
         coordinates.add(0, lastY);
         coordinates.remove(4);
     }
-//////////-FOR-TEST-////////////
-    public void moveY(double Y){
+
+    //////////-FOR-TEST-////////////
+    public void moveY(double Y) {
         bird.moveY(Y);
     }
 
-    public void moveX(double X){
+    public void moveX(double X) {
         bird.moveX(X);
     }
 
-    public double getBirdX(){
+    public double getBirdX() {
         return bird.getX();
     }
 
-    public double getBirdY(){
+    public double getBirdY() {
         return bird.getY();
     }
 //////////////////////////////////
@@ -104,15 +105,15 @@ public class GameModel {
         return scoreLabel;
     }
 
-    public boolean getGameOver(){
+    public boolean getGameOver() {
         return gameOver;
     }
 
-    void setGameOverFalse(){
+    void setGameOverFalse() {
         gameOver = false;
     }
 
-    int getFinalScore(){
+    int getFinalScore() {
         return finalScore;
     }
 
