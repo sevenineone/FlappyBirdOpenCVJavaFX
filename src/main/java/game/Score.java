@@ -1,6 +1,5 @@
 package game;
-
-public class Score {
+ class Score {
     private int score;
 
     public Score() {

@@ -7,7 +7,7 @@ import java.util.Random;
 class GenerateLevel {
 
 
-    void generate(ArrayList<Wall> walls, Bird bird, Score scoreLabel) {
+    void generate(ArrayList<Wall> walls) {
 
         for (int i = 0; i < 100; i++) {
             int enter = (int) (Math.random() * 100 + 60); // 60 to 100
@@ -28,6 +28,16 @@ class GenerateLevel {
 
     }
 
+    void generateForTest(ArrayList<Wall> walls){
+        Wall wall = new Wall(100);
+        wall.moveX(600);
+        wall.moveY(0);
+        walls.add(wall);
+        Wall wall2 = new Wall(400);
+        wall2.moveX(600);
+        wall2.moveY(200);
+        walls.add(wall2);
+    }
 
 
 

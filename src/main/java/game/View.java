@@ -55,6 +55,7 @@ class View {
         sceneMenu.setOnKeyPressed(k -> {
             if (k.getCode() == KeyCode.SPACE) {
                 gameModel = new GameModel();
+                gameModel.init();
                 show(sceneGame);
                 AnimationTimer animationTimer = new AnimationTimer() {
                     @Override

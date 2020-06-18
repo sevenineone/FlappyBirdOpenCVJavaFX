@@ -2,28 +2,34 @@ package game;
 
 import java.util.ArrayList;
 
-class GameModel {
+public class GameModel {
     private double lastY = 300;
     private ArrayList<Wall> walls = new ArrayList<>();
     private Bird bird;
     private Score scoreLabel = new Score();
     //-//
-    boolean gameOver = false;
+    public boolean gameOver = false;
     int finalScore = 0;
     boolean viewOnce = false;
     //-//
     private ArrayList<Double> coordinates = new ArrayList<>();
     private FaceDetection faceDetection = new FaceDetection();
 
-    GameModel() {
+    public void init() {
         bird = new Bird();
         GenerateLevel generateLevel = new GenerateLevel();
-        generateLevel.generate(walls, bird, scoreLabel);
+        generateLevel.generate(walls);
         faceDetection.start();
         coordinates.add(300.0);
         coordinates.add(300.0);
         coordinates.add(300.0);
         coordinates.add(300.0);
+    }
+
+    public void initForTest(){
+        bird = new Bird();
+        GenerateLevel generateLevel = new GenerateLevel();
+        generateLevel.generateForTest(walls);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -34,13 +40,15 @@ class GameModel {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void moveX() {
+    public void moveX() {
         bird.moveX(bird.getX() + 2);
     }
 
     //-//
 
-    private void intersection() {
+    public void intersection() {
+        if (bird.getY() < 0) bird.moveY(0);
+        if (bird.getY() > 565) bird.moveY(565);
         for (Wall w : walls) {
             if (bird.intersects(w)) {
                 finalScore = scoreLabel.get();
@@ -64,12 +72,26 @@ class GameModel {
             lastY = y;
         }
         bird.moveY((coordinates.get(0) + coordinates.get(1) + coordinates.get(2) + coordinates.get(3) + lastY) / 5);
-        if (bird.getY() < 0) bird.moveY(0);
-        if (bird.getY() > 580) bird.moveY(580);
         coordinates.add(0, lastY);
         coordinates.remove(4);
     }
+//////////-FOR-TEST-////////////
+    public void moveY(double Y){
+        bird.moveY(Y);
+    }
 
+    public void moveX(double X){
+        bird.moveX(X);
+    }
+
+    public double getBirdX(){
+        return bird.getX();
+    }
+
+    public double getBirdY(){
+        return bird.getY();
+    }
+//////////////////////////////////
 
     Bird getBird() {
         return bird;

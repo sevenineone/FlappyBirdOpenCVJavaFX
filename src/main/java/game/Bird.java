@@ -37,10 +37,9 @@ class Bird {
 
 
     boolean intersects(Wall wall) {
-        if ((Y <=wall.getY() + wall.getH()) && (Y + H> wall.getY()) && (X<=wall.getX() + 40) && (X + W >=wall.getX())) {
+        if ((Y <= wall.getY() + wall.getH()) && (Y + H >= wall.getY()) && (X <= wall.getX() + 40) && (X + W >= wall.getX())) {
             return true;
-        }
-        else return false;
+        } else return false;
 
     }
 
